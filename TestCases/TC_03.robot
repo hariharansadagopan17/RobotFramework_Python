@@ -1,6 +1,6 @@
 *** Settings ***
 Library  SeleniumLibrary
-
+Library  DateTime
 *** Variables ***
 ${browser}     chrome
 ${url}      http://demoqa.com/automation-practice-form
@@ -17,6 +17,36 @@ InputTextBoxTest
 
 
 *** Keywords ***
+### This keyword evaluates the difference from current date and moves ahead/backward to select the month ###
+Select Date  [Arguments]  ${year}  ${month}  ${date}
+
+
+   ${currentDate} =     Get Current Date    result_format=datetime
+   Convert To Integer  ${year}
+   Convert To Integer  ${month}
+   Convert To Integer  ${date}
+   ${month-diff}=  Evaluate  ${month}-${currentDate.month}
+   ${year-diff}=  Evaluate  ${year}-${currentDate.year}
+   ${move}=  Evaluate  ${year-diff}*12+${month-diff}
+
+   Wait Until Element Is Enabled  xpath=//*[@id="dateOfBirthInput"]
+   Click Element  xpath=//*[@id="dateOfBirthInput"]
+
+   ${shiftForward}=  Set Variable If
+   ...   ${move}>0  1
+   ...   ${move}<0  0
+
+   ${move}=  Set Variable If
+   ...   ${move}>0  ${move}
+   ...   ${move}<0  ${move}*-1
+
+   :FOR     ${var}  IN RANGE    ${move}
+       \  Run Keyword If  ${shiftForward}==0  Click Element  css=#dateOfBirth > div.react-datepicker__tab-loop > div.react-datepicker-popper > div > div > button.react-datepicker__navigation.react-datepicker__navigation--previous
+       \  Run Keyword If  ${shiftForward}==1  Click Element  css=#dateOfBirth > div.react-datepicker__tab-loop > div.react-datepicker-popper > div > div > button.react-datepicker__navigation.react-datepicker__navigation--previous
+
+    Wait Until Element Is Enabled  xpath=//*[@id="dateOfBirthInput"]
+    Click Element  xpath=//*[text()="${date}"]
+
 SmokeTestApp
     open browser     ${url}     ${browser}
     maximize browser window
@@ -37,9 +67,9 @@ SmokeTestApp
     #select radio button    gender   Male
     click element    ${gender_button}
     input text      ${mobilenumber_selector}    ${mobile_number_value}
-    clear element text  ${date_of_birth_value}
     sleep  5
-    input text      ${date_of_birth_value}      ${date_of_birth}
+    Select Date  1989  7  17
+
     sleep  5
 
     sleep  5
