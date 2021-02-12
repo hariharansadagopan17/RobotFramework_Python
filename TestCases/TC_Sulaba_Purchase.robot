@@ -15,8 +15,11 @@ ${budget_period_date_to}        02/28/2021
 
 SulabaIshaTest
     PurchaseTestApp
+    Capture page screenshot to custom file
 
 *** Keywords ***
+Capture page screenshot to custom file
+    Capture Page Screenshot  ${OUTPUTDIR}/custom-screenshot-2.png
 PurchaseTestApp
     open browser     ${url}     ${browser}
     maximize browser window
@@ -25,7 +28,7 @@ PurchaseTestApp
     ${signinbutton_locator}                    set variable     xpath://*[@id="wrapwrap"]/main/div/div[1]/div/div/div/div/form/div[4]/button
     ${dropdownmenu_locator}                    set variable     xpath:/html/body/header/nav/ul[1]/li/a
     ${PurchaseRequest_locator}                 set variable     xpath:/html/body/header/nav/ul[1]/li/div/a[15]
-    ${PurchaseRequest_link_locator}            set variable     xpath:/html/body/header/nav/ul[2]/li[3]/a
+    ${PurchaseRequest_link_locator}            set variable     xpath://a[contains(text(),"Purchase Requests")]
     ${PurchaseRequest_Dropdown_locator}        set variable     xpath:/html/body/header/nav/ul[2]/li[3]/div/a[1]
     ${Create_locator}                          set variable     xpath:/html/body/div[2]/div/div[1]/div/div[2]/div[1]/div/div/button[3]
     ${companydropdown_locator}                 set variable     xpath:/html/body/header/nav/ul[3]/li[3]/a
@@ -39,18 +42,24 @@ PurchaseTestApp
     ${Purchase_Budget_search_Link_locator}     set variable     xpath:/html/body/ul[5]/li[8]/a
     ${Purchase_Budget_Search_Budget_Modal}     set variable     xpath://div[@class="modal o_technical_modal show"]
     ${Purchase_Budget_Search_Box_locator}      set variable     xpath://div[@class="o_searchview_input_container"]/input
+    ${Purchase_Budget_Search_Box_Txtbox}       set variable     xpath://div[@class="o_searchview_input_container"]/div/li/a
     ${Purchase_BookofAccounts_locator}         set variable     xpath:/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[3]/table[1]/tbody/tr[10]/td[2]/div/div/input
     ${Purchase_BookofAccounts_Modal_locator}   set variable     xpath:/html/body/ul[6]
     ${Purchase_BookofAccounts_Link_locator}    set variable     xpath:/html/body/ul[6]/li/a
     ${Purchase_BookofAccounts_Link_locator}    set variable     xpath:/html/body/ul[6]/li/a
+
+
     input text       ${username_locator}      ${Inputvalue_username}
     input text       ${password_locator}      ${Inputvalue_password}
     click Element    ${signinbutton_locator}
-    sleep   8
+    Capture page screenshot to custom file
+    sleep   14
     click Element    ${dropdownmenu_locator}
-    sleep   8
+    sleep   12
     click Element    ${PurchaseRequest_locator}
-    sleep   8
+    sleep   12
+    Wait Until Element Is Visible   ${PurchaseRequest_link_locator}
+    Capture page screenshot to custom file
     click Element    ${PurchaseRequest_link_locator}
     sleep  8
     Mouse over       ${PurchaseRequest_Dropdown_locator}
@@ -69,16 +78,11 @@ PurchaseTestApp
     Mouse down      ${RequestingCompanyDropbox_Link_locator}
     click Element   ${RequestingCompanyDropbox_Link_locator}
     sleep   8
+    input text      ${Purchase_Budget_locator}
     click Element   ${Purchase_Budget_locator}
-    Mouse over      ${Purchase_Budget_Modal_locator}
+    input text      ${Purchase_Budget_locator}  1282
     Mouse down      ${Purchase_Budget_search_Link_locator}
     click Element   ${Purchase_Budget_search_Link_locator}
-    Wait Until Element Is Visible   ${Purchase_Budget_Search_Budget_Modal}
-    input text ${Purchase_Budget_Search_Box_locator}
-    Press Keys button RETURN
-
-    sleep   8
-
     sleep   8
 
     close browser
