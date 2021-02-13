@@ -36,14 +36,14 @@ launchBrowser
 Open Browser To Login Page
 
 
-    launchBrowser    ${url}          ${browser}
-    ${username_locator}      set variable      name:login
-    ${password_locator}      set variable      name:password
-    ${submitButton_locator}  set variable      xpath://button[@type="submit"]
-    input text       ${username_locator}  ${Inputvalue_username}
-    input text       ${password_locator}  ${Inputvalue_password}
-    Wait Until Element Is Visible   ${submitButton_locator}
-    click Element   ${submitButton_locator}
+    launchBrowser            ${url}               ${browser}
+    ${username_locator}      set variable         name:login
+    ${password_locator}      set variable         name:password
+    ${submitButton_locator}  set variable         xpath://button[@type="submit"]
+    input text               ${username_locator}  ${Inputvalue_username}
+    input text               ${password_locator}  ${Inputvalue_password}
+    Wait Until Element Is Visible                 ${submitButton_locator}
+    click Element                                 ${submitButton_locator}
     Capture page screenshot to loginscreen file
 
 Go To Budget Page

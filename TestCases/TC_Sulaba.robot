@@ -4,7 +4,7 @@ Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Test Setup        Go To Budget Page
 Test Template     Create Budget
-Resource           ../Resources/resources.robot
+Resource          ../Resources/resources.robot
 
 *** Test Cases ***
 
